@@ -1,8 +1,10 @@
+// (c)2017 MARTIN HAFIS HALFAR
+
 #include <iostream>
-#include <vector>
-#include <algorithm>
-#include <cmath>
 #include <string>
+#include <cmath>
+#include <algorithm>
+#include <vector>
 
 struct World {
     int X, Y; // map limits
@@ -49,7 +51,7 @@ class Vector2i {
 
 struct Node {
 	Vector2i pos; // position of node
-	Node *parent; // parent of node
+	struct Node *parent; // parent of node
 	int gCost, hCost; // costs of node
 	int xStep, yStep; // parent / this node cords change
 	Node(const Vector2i& _pos, int _gCost = 0, int _hCost = 0) {
@@ -116,12 +118,13 @@ std::string findPath(World world, const Vector2i& start, const Vector2i& target)
 		closedSet.push_back(currentNode); // insert current node to checked list
 
 		if (currentNode->pos == targetNode->pos) { // end if current node is matching target node
+			char s;
 			do {
-				char s = '-';
 				if (currentNode->xStep == 1) s = 'E'; // translate d in cords into chars and output them into output string
-				if (currentNode->xStep == -1) s = 'W';
-				if (currentNode->yStep == 1) s = 'S';
-				if (currentNode->yStep == -1) s = 'N';
+				else if (currentNode->xStep == -1) s = 'W';
+				else if (currentNode->yStep == 1) s = 'S';
+				else if (currentNode->yStep == -1) s = 'N';
+				else s = 'X';
 				path.insert(path.begin(), s);
 				currentNode = currentNode->parent; // recurse back to the start node
 			} while (!(currentNode->pos == start));
@@ -192,8 +195,10 @@ int main()
 	std::string n = findPath(world, begin, end); // find path between nodes (best possible)
 	world.dealloc(); // deallocate world
 
-	std::cout << "A* Algorithm" << std::endl << std::endl;
-	std::cout << std::endl << "Shortest path: " << n.size() << " nodes" << std::endl << "Steps: " << n;
+	std::cout << std::endl << "A* Path-finding algorithm C++" << std::endl;
+	std::cout << std::endl << "Shortest path: " << n.size() << " nodes" << std::endl << "Steps: " << n << std::endl;
 
 	return 0;
 }
+
+// (c)2017 MARTIN HAFIS HALFAR
